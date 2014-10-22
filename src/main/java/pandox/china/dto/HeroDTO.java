@@ -11,16 +11,26 @@ public class HeroDTO {
     private Integer level;
     private Integer reset;
 
-    private String type;
+    private String img;
     private HeroType heroType;
+    private String longHeroType;
 
     public HeroDTO(Character character) {
         setLogin(character.getAccountId());
         setName(character.getName());
         setLevel(character.getcLevel());
         setReset(character.getResets());
-        setType(character.getClazz().toString());
+        setImg(HeroType.valueOf(character.getClazz().intValue()).getImg());
         setHeroType(HeroType.valueOf(character.getClazz().intValue()));
+        longHeroType = HeroType.valueOf(character.getClazz().intValue()).getDesc();
+    }
+
+    public String getLongHeroType() {
+        return longHeroType;
+    }
+
+    public void setLongHeroType(String longHeroType) {
+        this.longHeroType = longHeroType;
     }
 
     public String getLogin() {
@@ -55,29 +65,16 @@ public class HeroDTO {
         this.reset = reset;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("HeroDTO{");
-        sb.append("login='").append(login).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", level=").append(level);
-        sb.append(", reset=").append(reset);
-        sb.append(", type='").append(type).append('\'');
-        sb.append(", heroType=").append(heroType);
-        sb.append('}');
-        return sb.toString();
-    }
-
     public HeroType getHeroType() {
         return heroType;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public void setHeroType(HeroType heroType) {

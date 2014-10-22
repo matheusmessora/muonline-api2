@@ -15,6 +15,9 @@ public class ProfileDTO {
     private int exp;
     private int qtdBadges;
 
+    private boolean vip;
+    private int vipDays;
+
     private String login;
 
 
@@ -37,6 +40,25 @@ public class ProfileDTO {
         }
 
         this.setQtdBadges(entity.getBadgeProfiles().size());
+
+        this.vip = entity.getMembInfo().getScfIsVip() == (short) 1;
+        this.vipDays = entity.getMembInfo().getScfVipDays();
+    }
+
+    public boolean isVip() {
+        return vip;
+    }
+
+    public void setVip(boolean isVIP) {
+        this.vip = isVIP;
+    }
+
+    public int getVipDays() {
+        return vipDays;
+    }
+
+    public void setVipDays(int vipDays) {
+        this.vipDays = vipDays;
     }
 
     public String getLogin() {

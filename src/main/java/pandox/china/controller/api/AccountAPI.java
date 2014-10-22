@@ -10,6 +10,7 @@ import pandox.china.controller.BaseController;
 import pandox.china.dto.AccountDTO;
 import pandox.china.service.AccountService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -25,12 +26,21 @@ public class AccountAPI extends BaseController {
 
     @RequestMapping(value = "/account", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<AccountDTO> findAll() {
-        List<AccountDTO> accountDTOs = service.findAll();
-        for (AccountDTO accountDTO : accountDTOs) {
-            accountDTO.setPassword(null);
+    public List<AccountDTO> findAll(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("X-MMM")) {
+                    List<AccountDTO> accountDTOs = service.findAll();
+                    for (AccountDTO accountDTO : accountDTOs) {
+                        accountDTO.setPassword(null);
+                    }
+                    return accountDTOs;
+                }
+            }
         }
-        return accountDTOs;
+
+        return null;
+
     }
 
 
@@ -53,3 +63,4 @@ public class AccountAPI extends BaseController {
 
 
 }
+

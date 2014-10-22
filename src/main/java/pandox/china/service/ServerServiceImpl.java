@@ -3,8 +3,10 @@ package pandox.china.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pandox.china.dto.ServerDTO;
+import pandox.china.model.MembStat;
 import pandox.china.repo.AccountRepository;
 import pandox.china.repo.CharacterRepository;
+import pandox.china.repo.MembStatRepository;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -17,18 +19,30 @@ public class ServerServiceImpl implements ServerService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private MembStatRepository membStatRepository;
+
+    @Autowired
     private CharacterRepository characterRepository;
 
     @Override
     public ServerDTO get() {
 
+        Integer online = 0;
+
+        Iterable<MembStat> membStats = membStatRepository.findAll();
+        for (MembStat membStat : membStats) {
+            if(membStat.getConnectStat() == 1) {
+                online += 1;
+            }
+        }
+
+
         Long qtdAccount = accountRepository.count();
         Long qtdChars = characterRepository.count();
-        Long qtdOnline = 0L;
 
         boolean serverUp = isServerUp();
 
-        return new ServerDTO(qtdAccount, qtdChars, qtdOnline, serverUp);
+        return new ServerDTO(qtdAccount, qtdChars, online, serverUp);
     }
 
     private boolean isServerUp() {

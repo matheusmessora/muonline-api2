@@ -37,6 +37,18 @@ public class Profile {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "profile")
     private Set<BadgeProfile> badgeProfiles;
 
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    private Set<ItemProfile> itemProfile;
+
+    public Set<ItemProfile> getItemProfile() {
+        return itemProfile;
+    }
+
+    public void setItemProfile(Set<ItemProfile> itemProfile) {
+        this.itemProfile = itemProfile;
+    }
+
     public Profile() {
     }
 

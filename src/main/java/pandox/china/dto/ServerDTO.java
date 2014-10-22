@@ -5,11 +5,11 @@ public class ServerDTO {
 
     private Long qtdAccount;
     private Long qtdChars;
-    private Long qtdOnline;
+    private Integer qtdOnline;
 
     private boolean serverUp;
 
-    public ServerDTO(Long qtdAccount, Long qtdChars, Long qtdOnline, boolean serverUp) {
+    public ServerDTO(Long qtdAccount, Long qtdChars, Integer qtdOnline, boolean serverUp) {
         this.qtdAccount = qtdAccount;
         this.qtdChars = qtdChars;
         this.qtdOnline = qtdOnline;
@@ -32,11 +32,11 @@ public class ServerDTO {
         this.qtdChars = qtdChars;
     }
 
-    public Long getQtdOnline() {
+    public Integer getQtdOnline() {
         return qtdOnline;
     }
 
-    public void setQtdOnline(Long qtdOnline) {
+    public void setQtdOnline(Integer qtdOnline) {
         this.qtdOnline = qtdOnline;
     }
 

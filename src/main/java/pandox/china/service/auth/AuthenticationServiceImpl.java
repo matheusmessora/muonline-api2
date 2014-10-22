@@ -88,6 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 if (cookie.getName().equals(COOKIE_TOKEN)) {
                     Integer membGuid = cache.getAuthentication(cookie.getValue());
                     if (membGuid != null) {
+                        cache.putAuthentication(cookie.getValue(), membGuid);
                         return new TokenDTO(cookie.getValue(), membGuid);
                     }
                 }

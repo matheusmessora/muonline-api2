@@ -3,7 +3,6 @@ package pandox.china.model;
 import pandox.china.dto.AccountDTO;
 
 import javax.persistence.*;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "MEMB_INFO", schema = "dbo", catalog = "MuOnline")
@@ -51,6 +50,16 @@ public class MembInfo {
     private byte[] muItemShopGiftList;
     private byte[] muItemShopGiftMsg;
     private int goldChannelTime;
+    private MembStat membStat;
+
+
+    public void chargeMoney(Integer value) {
+        this.scfVipMoney -= value;
+    }
+
+    public void decreaseVIP(){
+        this.scfVipDays -= 1;
+    }
 
     public MembInfo() {
     }
@@ -70,11 +79,19 @@ public class MembInfo {
         return membGuid;
     }
 
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "membInfo", cascade = CascadeType.ALL)
+    public MembStat getMembStat() {
+        return this.membStat;
+    }
+
+    public void setMembStat(MembStat membStat) {
+        this.membStat = membStat;
+    }
+
     public void setMembGuid(int membGuid) {
         this.membGuid = membGuid;
     }
 
-    @Basic
     @Column(name = "memb___id", unique = true)
     public String getMembId() {
         return membId;
@@ -491,99 +508,14 @@ public class MembInfo {
 
         MembInfo membInfo = (MembInfo) o;
 
-        if (goblinCoin != membInfo.goblinCoin) return false;
-        if (goldChannelTime != membInfo.goldChannelTime) return false;
         if (membGuid != membInfo.membGuid) return false;
-        if (scfExtWarehouse != membInfo.scfExtWarehouse) return false;
-        if (scfIsVip != membInfo.scfIsVip) return false;
-        if (scfLuckyCoins != membInfo.scfLuckyCoins) return false;
-        if (scfVipDays != membInfo.scfVipDays) return false;
-        if (scfVipMoney != membInfo.scfVipMoney) return false;
-        if (scfWareVipCount != membInfo.scfWareVipCount) return false;
-        if (wCoin != membInfo.wCoin) return false;
-        if (wCoinP != membInfo.wCoinP) return false;
-        if (activationId != null ? !activationId.equals(membInfo.activationId) : membInfo.activationId != null)
-            return false;
-        if (addrDeta != null ? !addrDeta.equals(membInfo.addrDeta) : membInfo.addrDeta != null) return false;
-        if (addrInfo != null ? !addrInfo.equals(membInfo.addrInfo) : membInfo.addrInfo != null) return false;
-        if (applDays != null ? !applDays.equals(membInfo.applDays) : membInfo.applDays != null) return false;
-        if (blocCode != null ? !blocCode.equals(membInfo.blocCode) : membInfo.blocCode != null) return false;
-        if (confirmed != null ? !confirmed.equals(membInfo.confirmed) : membInfo.confirmed != null) return false;
-        if (country != null ? !country.equals(membInfo.country) : membInfo.country != null) return false;
-        if (ctl1Code != null ? !ctl1Code.equals(membInfo.ctl1Code) : membInfo.ctl1Code != null) return false;
-        if (fpasAnsw != null ? !fpasAnsw.equals(membInfo.fpasAnsw) : membInfo.fpasAnsw != null) return false;
-        if (fpasQues != null ? !fpasQues.equals(membInfo.fpasQues) : membInfo.fpasQues != null) return false;
-        if (gender != null ? !gender.equals(membInfo.gender) : membInfo.gender != null) return false;
-        if (jobCode != null ? !jobCode.equals(membInfo.jobCode) : membInfo.jobCode != null) return false;
-        if (mailAddr != null ? !mailAddr.equals(membInfo.mailAddr) : membInfo.mailAddr != null) return false;
-        if (mailChek != null ? !mailChek.equals(membInfo.mailChek) : membInfo.mailChek != null) return false;
-        if (membId != null ? !membId.equals(membInfo.membId) : membInfo.membId != null) return false;
-        if (membName != null ? !membName.equals(membInfo.membName) : membInfo.membName != null) return false;
-        if (membPwd != null ? !membPwd.equals(membInfo.membPwd) : membInfo.membPwd != null) return false;
-        if (modiDays != null ? !modiDays.equals(membInfo.modiDays) : membInfo.modiDays != null) return false;
-        if (!Arrays.equals(muItemShopGiftList, membInfo.muItemShopGiftList)) return false;
-        if (!Arrays.equals(muItemShopGiftMsg, membInfo.muItemShopGiftMsg)) return false;
-        if (!Arrays.equals(muItemShopList, membInfo.muItemShopList)) return false;
-        if (outDays != null ? !outDays.equals(membInfo.outDays) : membInfo.outDays != null) return false;
-        if (phonNumb != null ? !phonNumb.equals(membInfo.phonNumb) : membInfo.phonNumb != null) return false;
-        if (postCode != null ? !postCode.equals(membInfo.postCode) : membInfo.postCode != null) return false;
-        if (secretAnswer != null ? !secretAnswer.equals(membInfo.secretAnswer) : membInfo.secretAnswer != null)
-            return false;
-        if (secretQuestion != null ? !secretQuestion.equals(membInfo.secretQuestion) : membInfo.secretQuestion != null)
-            return false;
-        if (smsPoints != null ? !smsPoints.equals(membInfo.smsPoints) : membInfo.smsPoints != null) return false;
-        if (snoNumb != null ? !snoNumb.equals(membInfo.snoNumb) : membInfo.snoNumb != null) return false;
-        if (telNumb != null ? !telNumb.equals(membInfo.telNumb) : membInfo.telNumb != null) return false;
-        if (trueDays != null ? !trueDays.equals(membInfo.trueDays) : membInfo.trueDays != null) return false;
-        if (vipFree != null ? !vipFree.equals(membInfo.vipFree) : membInfo.vipFree != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = membGuid;
-        result = 31 * result + (membId != null ? membId.hashCode() : 0);
-        result = 31 * result + (membPwd != null ? membPwd.hashCode() : 0);
-        result = 31 * result + (membName != null ? membName.hashCode() : 0);
-        result = 31 * result + (snoNumb != null ? snoNumb.hashCode() : 0);
-        result = 31 * result + (postCode != null ? postCode.hashCode() : 0);
-        result = 31 * result + (addrInfo != null ? addrInfo.hashCode() : 0);
-        result = 31 * result + (addrDeta != null ? addrDeta.hashCode() : 0);
-        result = 31 * result + (telNumb != null ? telNumb.hashCode() : 0);
-        result = 31 * result + (phonNumb != null ? phonNumb.hashCode() : 0);
-        result = 31 * result + (mailAddr != null ? mailAddr.hashCode() : 0);
-        result = 31 * result + (fpasQues != null ? fpasQues.hashCode() : 0);
-        result = 31 * result + (fpasAnsw != null ? fpasAnsw.hashCode() : 0);
-        result = 31 * result + (jobCode != null ? jobCode.hashCode() : 0);
-        result = 31 * result + (applDays != null ? applDays.hashCode() : 0);
-        result = 31 * result + (modiDays != null ? modiDays.hashCode() : 0);
-        result = 31 * result + (outDays != null ? outDays.hashCode() : 0);
-        result = 31 * result + (trueDays != null ? trueDays.hashCode() : 0);
-        result = 31 * result + (mailChek != null ? mailChek.hashCode() : 0);
-        result = 31 * result + (blocCode != null ? blocCode.hashCode() : 0);
-        result = 31 * result + (ctl1Code != null ? ctl1Code.hashCode() : 0);
-        result = 31 * result + (vipFree != null ? vipFree.hashCode() : 0);
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (secretQuestion != null ? secretQuestion.hashCode() : 0);
-        result = 31 * result + (secretAnswer != null ? secretAnswer.hashCode() : 0);
-        result = 31 * result + (int) scfIsVip;
-        result = 31 * result + scfVipMoney;
-        result = 31 * result + scfVipDays;
-        result = 31 * result + scfWareVipCount;
-        result = 31 * result + scfLuckyCoins;
-        result = 31 * result + (smsPoints != null ? smsPoints.hashCode() : 0);
-        result = 31 * result + (confirmed != null ? confirmed.hashCode() : 0);
-        result = 31 * result + (activationId != null ? activationId.hashCode() : 0);
-        result = 31 * result + (int) scfExtWarehouse;
-        result = 31 * result + wCoin;
-        result = 31 * result + wCoinP;
-        result = 31 * result + goblinCoin;
-        result = 31 * result + (muItemShopList != null ? Arrays.hashCode(muItemShopList) : 0);
-        result = 31 * result + (muItemShopGiftList != null ? Arrays.hashCode(muItemShopGiftList) : 0);
-        result = 31 * result + (muItemShopGiftMsg != null ? Arrays.hashCode(muItemShopGiftMsg) : 0);
-        result = 31 * result + goldChannelTime;
-        return result;
+        return membGuid;
     }
+
 }
