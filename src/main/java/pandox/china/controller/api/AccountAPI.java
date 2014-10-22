@@ -2,6 +2,7 @@ package pandox.china.controller.api;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -24,12 +25,15 @@ public class AccountAPI extends BaseController {
     @Autowired
     private AccountService service;
 
+    @Autowired
+    private Environment env;
+
     @RequestMapping(value = "/account", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<AccountDTO> findAll(HttpServletRequest request) {
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals("X-MMM")) {
+                if (cookie.getName().equals(env.getProperty("admin.token"))) {
                     List<AccountDTO> accountDTOs = service.findAll();
                     for (AccountDTO accountDTO : accountDTOs) {
                         accountDTO.setPassword(null);
