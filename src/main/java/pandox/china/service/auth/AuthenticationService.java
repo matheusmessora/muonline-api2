@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface AuthenticationService {
 
+    boolean isADMIN(HttpServletRequest request);
+
     TokenDTO login(AccountDTO dto, HttpServletResponse response);
 
     TokenDTO userLogged(HttpServletRequest request);

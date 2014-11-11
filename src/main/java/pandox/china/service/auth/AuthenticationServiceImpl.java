@@ -2,6 +2,7 @@ package pandox.china.service.auth;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import pandox.china.dto.TokenDTO;
 import pandox.china.exception.UnauthorizedException;
 import pandox.china.model.MembInfo;
 import pandox.china.repo.AccountRepository;
-import pandox.china.repo.ProfileRepository;
 import pandox.china.service.cache.CacheService;
 
 import javax.servlet.http.Cookie;
@@ -31,14 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private AccountRepository repository;
 
     @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private ProfileRepository profileRepository;
-
-
-    @Autowired
     private CacheService cache;
+
+    @Autowired
+    private Environment env;
 
     public static String generateToken(String login, Integer id) {
 
@@ -62,6 +58,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static String buildHash(String login, Integer id) {
         return login + "|" + id + new Date();
 
+    }
+
+    @Override
+    public boolean isADMIN(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals(env.getProperty("admin.token"))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

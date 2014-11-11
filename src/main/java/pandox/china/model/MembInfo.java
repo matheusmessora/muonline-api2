@@ -54,11 +54,15 @@ public class MembInfo {
 
 
     public void chargeMoney(Integer value) {
-        this.scfVipMoney -= value;
+        this.wCoin -= value;
     }
 
     public void decreaseVIP(){
         this.scfVipDays -= 1;
+    }
+
+    public void increaseVIP(Integer days){
+        this.scfVipDays += days;
     }
 
     public MembInfo() {

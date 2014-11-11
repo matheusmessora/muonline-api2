@@ -37,6 +37,12 @@ public class ItemAPI extends BaseController {
         return service.getAll();
     }
 
+    @RequestMapping(value = "/item/{id}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ItemDTO find(@PathVariable("id") Integer id) {
+        return service.get(id);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/checkout", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -47,5 +53,4 @@ public class ItemAPI extends BaseController {
 
         service.buy(profile, itemDTO.getItem());
     }
-
 }

@@ -32,7 +32,7 @@ public class HeroServiceImpl {
         List<HeroDTO> dtos = new ArrayList<>();
 
         Pageable pageable = new PageRequest(0, size);
-        List<Character> chars = characterRepository.findByAccountIdNotInOrderByResetsDescCLevelDesc(pageable, "mmmkiller", "teste2", "teste", "rafaela");
+        List<Character> chars = characterRepository.findByAccountIdNotInOrderByResetsDescCLevelDesc(pageable, "mmmkiller", "enigma", "rafaela");
 
         for (Character character : chars) {
             dtos.add(new HeroDTO(character));

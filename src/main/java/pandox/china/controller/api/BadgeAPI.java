@@ -3,9 +3,7 @@ package pandox.china.controller.api;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pandox.china.controller.BaseController;
 import pandox.china.dto.BadgeDTO;
 import pandox.china.service.BadgeService;
@@ -25,6 +23,14 @@ public class BadgeAPI extends BaseController {
     @ResponseBody
     public List<BadgeDTO> findAll() {
         return service.getAll();
+    }
+
+
+    @RequestMapping(value = "/profile/{perfil}/badge/{id}", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    public void addToProfile(@PathVariable("perfil") Integer perfil, @PathVariable("id") Integer id) {
+        service.addToProfile(perfil, id);
+
     }
 
 }

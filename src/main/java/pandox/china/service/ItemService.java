@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pandox.china.dto.ErroDTO;
 import pandox.china.dto.ItemDTO;
 import pandox.china.exception.BadRequestException;
+import pandox.china.exception.NoContentException;
 import pandox.china.model.MembInfo;
 import pandox.china.model.custom.Item;
 import pandox.china.model.custom.ItemProfile;
@@ -26,6 +27,7 @@ import java.util.List;
 public class ItemService {
 
     private static Logger log = Logger.getLogger(ItemService.class);
+
     @Autowired
     private ItemRepository repository;
 
@@ -35,6 +37,15 @@ public class ItemService {
     @Autowired
     private AccountRepository accountRepository;
 
+    public ItemDTO get(Integer id) {
+        Item entity = repository.findOne(id);
+
+        if(entity == null){
+            throw new NoContentException();
+        }else {
+            return new ItemDTO(entity);
+        }
+    }
 
     public List<ItemDTO> getAll() {
         List<ItemDTO> itemDTOs = new ArrayList<>();
@@ -53,7 +64,7 @@ public class ItemService {
             throw new BadRequestException(new ErroDTO("item", "Selecione um item correto."));
         }
 
-        Integer money = profile.getMembInfo().getScfVipMoney();
+        Integer money = profile.getMembInfo().getwCoin();
         if(money < item.getValue()) {
             log.info("compraITEM.WARN. profile=" + profile.getId() + ", login=" + profile.getMembInfo().getMembId() + ", item=" + item.getId() + ", msg=Saldo negativo");
             throw new BadRequestException(new ErroDTO("item", "Você não possui créditos"));
@@ -80,7 +91,7 @@ public class ItemService {
 
         if(isVIPItem(item)){
             membInfo.setScfIsVip((short) 1);
-            membInfo.setScfVipDays(getVipDays(item));
+            membInfo.increaseVIP(getVipDays(item));
             accountRepository.save(membInfo);
 
             itemProfile.setProcessDate(new Date());
@@ -91,23 +102,21 @@ public class ItemService {
             log.info("compraITEM.SUCESSO. profile=" + profile.getId() + ", login=" + profile.getMembInfo().getMembId() + ", item=" + item.getId());
         }
 
-
-
         return itemProfile;
     }
 
     private Integer getVipDays(Item item){
         if(item.getId().equals(1)){
-            return 15;
+            return 16;
         }
         if(item.getId().equals(2)){
-            return 30;
+            return 31;
         }
         if(item.getId().equals(3)){
-            return 60;
+            return 61;
         }
         log.error("vipDAYS.ERRO. item=" + item.getId());
-        return 15;
+        return 16;
     }
 
     private boolean isVIPItem(Item item) {
@@ -115,7 +124,7 @@ public class ItemService {
         return idsVIP.contains(item.getId());
     }
 
-    @Scheduled(cron="*/5 * * * * *")
+    @Scheduled(cron="0 0 3 * * *")
     public void processVIP() {
         log.info("PROCESSANDO VIP");
         List<MembInfo> membInfos = accountRepository.findByScfIsVip((short) 1);
@@ -126,6 +135,7 @@ public class ItemService {
             if(membInfo.getScfVipDays() <= 0){
                 log.info("VIP.REMOVIDO. login=" + membInfo.getMembId() + ", credits=" + membInfo.getScfVipMoney());
                 membInfo.setScfIsVip((short) 0);
+                membInfo.setScfVipDays((short) 0);
             }
         }
         log.info("VIP.SUCESSO");

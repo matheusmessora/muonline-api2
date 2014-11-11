@@ -24,6 +24,15 @@ public class BadgeProfile {
     @JoinColumn(name = "profile_id", referencedColumnName = "id", nullable = false)
     private Profile profile;
 
+    public BadgeProfile(Badge badge, Profile profile) {
+        this.date = new Date();
+        this.badge = badge;
+        this.profile = profile;
+    }
+
+    public BadgeProfile() {
+    }
+
     public Integer getId() {
         return id;
     }

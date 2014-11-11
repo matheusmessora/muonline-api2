@@ -34,15 +34,31 @@ public class Profile {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "profile")
     private Set<EnqueteAnswer> enqueteAnswerses;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "profile")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<BadgeProfile> badgeProfiles;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    private Set<Credit> creditProfile;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     private Set<ItemProfile> itemProfile;
+
+    public void addBadge(Badge badge) {
+        getBadgeProfiles().add(new BadgeProfile(badge, this));
+        setExp(getExp() + badge.getGainExp());
+    }
 
     public Set<ItemProfile> getItemProfile() {
         return itemProfile;
+    }
+
+    public Set<Credit> getCreditProfile() {
+        return creditProfile;
+    }
+
+    public void setCreditProfile(Set<Credit> creditProfile) {
+        this.creditProfile = creditProfile;
     }
 
     public void setItemProfile(Set<ItemProfile> itemProfile) {

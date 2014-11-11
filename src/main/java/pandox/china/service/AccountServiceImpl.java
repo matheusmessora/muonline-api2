@@ -66,13 +66,13 @@ public class AccountServiceImpl implements AccountService {
 
         entity.setSnoNumb("123456789012345678");
         entity.setScfExtWarehouse((byte) 0);
-        entity.setScfIsVip((short) 0);
+        entity.setScfIsVip((short) 1);
         entity.setScfLuckyCoins(0);
-        entity.setScfVipDays(0);
+        entity.setScfVipDays(3);
         entity.setScfVipMoney(0);
         entity.setScfWareVipCount(0);
         entity.setScfExtWarehouse((byte) 0);
-        entity.setwCoin(0);
+        entity.setwCoin(350);
         entity.setwCoinP(0);
         entity.setGoblinCoin(0);
         entity.setGoldChannelTime(0);
