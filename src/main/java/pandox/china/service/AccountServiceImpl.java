@@ -3,13 +3,16 @@ package pandox.china.service;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pandox.china.dto.AccountDTO;
 import pandox.china.dto.ErroDTO;
 import pandox.china.dto.TokenDTO;
 import pandox.china.exception.BadRequestException;
 import pandox.china.model.MembInfo;
+import pandox.china.model.MembStat;
 import pandox.china.repo.AccountRepository;
+import pandox.china.repo.MembStatRepository;
 import pandox.china.service.auth.AuthenticationService;
 import pandox.china.service.auth.AuthenticationServiceImpl;
 import pandox.china.service.cache.CacheService;
@@ -23,6 +26,8 @@ public class AccountServiceImpl implements AccountService {
 
     private static Logger log = Logger.getLogger(AccountServiceImpl.class);
 
+    @Autowired
+    private MembStatRepository membStatRepository;
 
     @Autowired
     private AccountRepository membInfoRepo;
@@ -120,5 +125,17 @@ public class AccountServiceImpl implements AccountService {
         } else {
             throw new BadRequestException(new ErroDTO("token", "Token inválido"));
         }
+    }
+
+    @Scheduled(fixedRate=3600000)
+    public void processOnlineHour() {
+        log.info("PROCESSANDO ONLINE HOUR");
+        List<MembStat> membStats = membStatRepository.findByConnectStat(1);
+        log.info("totalOnline="+membStats.size());
+        for (MembStat membStat : membStats) {
+            membStat.addHour();
+        }
+        membStatRepository.save(membStats);
+
     }
 }

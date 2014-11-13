@@ -34,7 +34,7 @@ public class Character {
     private Integer pkTime;
     private Timestamp mDate;
     private Timestamp lDate;
-    private Byte ctlCode;
+    private Integer ctlCode;
     private Byte dbVersion;
     private byte[] quest;
     private Integer leadership;
@@ -330,11 +330,11 @@ public class Character {
 
     @Basic
     @Column(name = "CtlCode")
-    public Byte getCtlCode() {
+    public Integer getCtlCode() {
         return ctlCode;
     }
 
-    public void setCtlCode(Byte ctlCode) {
+    public void setCtlCode(Integer ctlCode) {
         this.ctlCode = ctlCode;
     }
 

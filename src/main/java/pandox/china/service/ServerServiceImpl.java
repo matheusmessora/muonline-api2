@@ -31,7 +31,7 @@ public class ServerServiceImpl implements ServerService {
 
         Iterable<MembStat> membStats = membStatRepository.findAll();
         for (MembStat membStat : membStats) {
-            if(membStat.getConnectStat() == 1) {
+            if(membStat.getConnectStat().equals(1)) {
                 online += 1;
             }
         }

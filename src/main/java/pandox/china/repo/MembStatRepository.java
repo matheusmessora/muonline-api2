@@ -3,8 +3,9 @@ package pandox.china.repo;
 import org.springframework.data.repository.CrudRepository;
 import pandox.china.model.MembStat;
 
+import java.util.List;
+
 public interface MembStatRepository extends CrudRepository<MembStat, String> {
 
-    MembStat findByMembId(String login);
-
+    List<MembStat> findByConnectStat(Integer connectStatus);
 }

@@ -11,9 +11,20 @@ public class HeroDTO {
     private Integer level;
     private Integer reset;
 
+    private Integer forca;
+    private Integer agilidade;
+    private Integer vitalidade;
+    private Integer energia;
+
+    private Integer life;
+    private Integer mana;
+
     private String img;
     private HeroType heroType;
     private String longHeroType;
+    private Integer onlineHours;
+
+    private boolean gameMaster;
 
     public HeroDTO(Character character) {
         setLogin(character.getAccountId());
@@ -23,6 +34,77 @@ public class HeroDTO {
         setImg(HeroType.valueOf(character.getClazz().intValue()).getImg());
         setHeroType(HeroType.valueOf(character.getClazz().intValue()));
         longHeroType = HeroType.valueOf(character.getClazz().intValue()).getDesc();
+        gameMaster = character.getCtlCode().equals(32);
+        forca = character.getStrength();
+        agilidade = character.getDexterity();
+        vitalidade = character.getVitality();
+        energia = character.getEnergy();
+        life = character.getMaxLife().intValue();
+        mana = character.getMaxMana().intValue();
+    }
+
+    public Integer getLife() {
+        return life;
+    }
+
+    public void setLife(Integer life) {
+        this.life = life;
+    }
+
+    public Integer getMana() {
+        return mana;
+    }
+
+    public void setMana(Integer mana) {
+        this.mana = mana;
+    }
+
+    public Integer getForca() {
+        return forca;
+    }
+
+    public void setForca(Integer forca) {
+        this.forca = forca;
+    }
+
+    public Integer getAgilidade() {
+        return agilidade;
+    }
+
+    public void setAgilidade(Integer agilidade) {
+        this.agilidade = agilidade;
+    }
+
+    public Integer getVitalidade() {
+        return vitalidade;
+    }
+
+    public void setVitalidade(Integer vitalidade) {
+        this.vitalidade = vitalidade;
+    }
+
+    public Integer getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia(Integer energia) {
+        this.energia = energia;
+    }
+
+    public boolean isGameMaster() {
+        return gameMaster;
+    }
+
+    public void setGameMaster(boolean gameMaster) {
+        this.gameMaster = gameMaster;
+    }
+
+    public Integer getOnlineHours() {
+        return onlineHours;
+    }
+
+    public void setOnlineHours(Integer onlineHours) {
+        this.onlineHours = onlineHours;
     }
 
     public String getLongHeroType() {

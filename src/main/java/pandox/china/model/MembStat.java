@@ -7,13 +7,18 @@ import java.sql.Timestamp;
 @Table(name = "MEMB_STAT", schema = "dbo", catalog = "MuOnline")
 public class MembStat {
     private String membId;
-    private Byte connectStat;
+    private Integer connectStat;
     private String serverName;
     private String ip;
     private Timestamp connectTm;
     private Timestamp disConnectTm;
     private Integer onlineHours;
+    private Integer hours;
     private MembInfo membInfo;
+
+    public void addHour(){
+        setHours(getHours() +1);
+    }
 
     @Id
     @Column(name = "memb___id", unique = true, nullable = false)
@@ -25,8 +30,22 @@ public class MembStat {
         this.membId = membId;
     }
 
+
+    @Basic
+    @Column(name = "Hours")
+    public Integer getHours() {
+        if(hours == null){
+            hours = 0;
+        }
+        return hours;
+    }
+
+    public void setHours(Integer hours) {
+        this.hours = hours;
+    }
+
     @OneToOne
-    @JoinColumn(name = "membInfo_memb___id")
+    @JoinColumn(name = "membInfo_memb___id", updatable = false, insertable = false)
     public MembInfo getMembInfo() {
         return membInfo;
     }
@@ -37,11 +56,11 @@ public class MembStat {
 
     @Basic
     @Column(name = "ConnectStat")
-    public Byte getConnectStat() {
+    public Integer getConnectStat() {
         return connectStat;
     }
 
-    public void setConnectStat(Byte connectStat) {
+    public void setConnectStat(Integer connectStat) {
         this.connectStat = connectStat;
     }
 
